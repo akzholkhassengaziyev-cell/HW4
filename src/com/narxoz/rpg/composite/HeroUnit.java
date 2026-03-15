@@ -34,7 +34,8 @@ public class HeroUnit implements CombatNode {
 
     @Override
     public String printTree(String indent) {
-        return indent + "- HeroUnit: " + name + " [HP=" + hp + ", ATK=" + attackPower + "]\n";
+        return indent + "- Hero: " + name +
+                " [HP=" + hp + ", ATK=" + attackPower + ", alive=" + isAlive() + "]\n";
     }
 
     public int getHp() {

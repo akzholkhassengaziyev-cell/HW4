@@ -34,33 +34,35 @@ public abstract class AbstractGroup implements CombatNode {
 
     @Override
     public int getAttackPower() {
-        int sum = 0;
+        int total = 0;
         for (CombatNode child : children) {
             if (child.isAlive()) {
-                sum += child.getAttackPower();
+                total += child.getAttackPower();
             }
         }
-        return sum;
+        return total;
     }
 
     @Override
     public void takeDamage(int amount) {
-        List<CombatNode> alive = collectAliveLeaves();
-        if (alive.isEmpty()) return;
+        List<CombatNode> aliveLeaves = collectAliveLeaves();
+        if (aliveLeaves.isEmpty()) return;
 
-        int perTarget = amount / alive.size();
-        int remainder = amount % alive.size();
+        int perLeaf = amount / aliveLeaves.size();
+        int remainder = amount % aliveLeaves.size();
 
-        for (int i = 0; i < alive.size(); i++) {
-            int dmg = perTarget + (i < remainder ? 1 : 0);
-            alive.get(i).takeDamage(dmg);
+        for (int i = 0; i < aliveLeaves.size(); i++) {
+            int damage = perLeaf + (i < remainder ? 1 : 0);
+            aliveLeaves.get(i).takeDamage(damage);
         }
     }
 
     @Override
     public boolean isAlive() {
         for (CombatNode child : children) {
-            if (child.isAlive()) return true;
+            if (child.isAlive()) {
+                return true;
+            }
         }
         return false;
     }
@@ -73,7 +75,11 @@ public abstract class AbstractGroup implements CombatNode {
                 .append(getClass().getSimpleName())
                 .append(": ")
                 .append(name)
-                .append("\n");
+                .append(" [ATK=")
+                .append(getAttackPower())
+                .append(", alive=")
+                .append(isAlive())
+                .append("]\n");
 
         for (CombatNode child : children) {
             sb.append(child.printTree(indent + "  "));
