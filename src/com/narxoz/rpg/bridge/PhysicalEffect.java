@@ -12,6 +12,7 @@ public class PhysicalEffect implements EffectImplementor {
 
     @Override
     public int applyEffect(int baseDamage, CombatNode attacker, CombatNode target, Random random) {
-        return baseDamage;
+        double modifier = 0.9 + random.nextDouble() * 0.2; // 0.9..1.1
+        return Math.max(1, (int) Math.round(baseDamage * modifier));
     }
 }

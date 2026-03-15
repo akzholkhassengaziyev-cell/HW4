@@ -12,6 +12,7 @@ public class FireEffect implements EffectImplementor {
 
     @Override
     public int applyEffect(int baseDamage, CombatNode attacker, CombatNode target, Random random) {
-        return baseDamage;
+        int burnBonus = 4 + random.nextInt(5); // 4..8
+        return Math.max(1, baseDamage + burnBonus);
     }
 }

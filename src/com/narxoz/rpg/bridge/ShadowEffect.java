@@ -12,6 +12,10 @@ public class ShadowEffect implements EffectImplementor {
 
     @Override
     public int applyEffect(int baseDamage, CombatNode attacker, CombatNode target, Random random) {
-        return baseDamage;
+        int critChance = random.nextInt(100);
+        if (critChance < 25) {
+            return Math.max(1, baseDamage * 2);
+        }
+        return Math.max(1, baseDamage);
     }
 }

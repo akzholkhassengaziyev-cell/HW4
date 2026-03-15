@@ -12,6 +12,7 @@ public class IceEffect implements EffectImplementor {
 
     @Override
     public int applyEffect(int baseDamage, CombatNode attacker, CombatNode target, Random random) {
-        return baseDamage;
+        int reduction = 2 + random.nextInt(4); // 2..5
+        return Math.max(1, baseDamage - reduction);
     }
 }

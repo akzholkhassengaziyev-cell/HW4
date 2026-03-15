@@ -20,8 +20,16 @@ public abstract class Skill {
         return name;
     }
 
+    public int getBaseDamage() {
+        return baseDamage;
+    }
+
     public EffectImplementor getEffect() {
         return effect;
+    }
+
+    protected int calculateRawDamage(CombatNode attacker) {
+        return baseDamage + attacker.getAttackPower();
     }
 
     public abstract void use(CombatNode attacker, CombatNode target, Random random, List<String> log);
