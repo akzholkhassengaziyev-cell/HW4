@@ -12,9 +12,14 @@ public class SingleTargetSkill extends Skill {
 
     @Override
     public void use(CombatNode attacker, CombatNode target, Random random, List<String> log) {
-        int damage = effect.applyEffect(baseDamage + attacker.getAttackPower(), attacker, target, random);
-        target.takeDamage(damage);
-        log.add(attacker.getName() + " uses " + name + " [" + effect.getName() + "] on " + target.getName()
-                + " for " + damage + " damage");
+        List<CombatNode> aliveTargets = target.collectAliveLeaves();
+        if (aliveTargets.isEmpty()) return;
+
+        CombatNode realTarget = aliveTargets.get(random.nextInt(aliveTargets.size()));
+        int damage = effect.applyEffect(calculateRawDamage(attacker), attacker, realTarget, random);
+        realTarget.takeDamage(damage);
+
+        log.add(attacker.getName() + " uses " + name + " [" + effect.getName() + "] on "
+                + realTarget.getName() + " for " + damage + " damage");
     }
 }

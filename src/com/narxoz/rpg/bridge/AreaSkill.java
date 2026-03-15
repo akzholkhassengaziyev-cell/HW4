@@ -12,12 +12,16 @@ public class AreaSkill extends Skill {
 
     @Override
     public void use(CombatNode attacker, CombatNode target, Random random, List<String> log) {
-        List<CombatNode> leaves = target.collectAliveLeaves();
-        for (CombatNode leaf : leaves) {
-            int damage = effect.applyEffect(baseDamage + attacker.getAttackPower(), attacker, leaf, random);
-            leaf.takeDamage(damage);
-            log.add(attacker.getName() + " uses " + name + " [" + effect.getName() + "] on "
-                    + leaf.getName() + " for " + damage + " damage");
+        List<CombatNode> aliveTargets = target.collectAliveLeaves();
+        if (aliveTargets.isEmpty()) return;
+
+        log.add(attacker.getName() + " uses " + name + " [" + effect.getName() + "] as AOE");
+
+        for (CombatNode realTarget : aliveTargets) {
+            int damage = effect.applyEffect(calculateRawDamage(attacker), attacker, realTarget, random);
+            realTarget.takeDamage(damage);
+
+            log.add("  -> " + realTarget.getName() + " takes " + damage + " damage");
         }
     }
 }
